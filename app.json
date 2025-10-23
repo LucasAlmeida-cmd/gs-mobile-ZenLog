@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "challenge-mottu",
+    "slug": "challenge-mottu",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "newArchEnabled": false
+    },
+    "android": {
+      "package": "com.lucascmd.challenge",
+      "newArchEnabled": false
+    },
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "014ca88d-3f94-4137-9c23-a3d0396c7cab"
+      }
+    },
+    "owner": "lucas-cmd",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/014ca88d-3f94-4137-9c23-a3d0396c7cab"
+    }
+  }
+}
