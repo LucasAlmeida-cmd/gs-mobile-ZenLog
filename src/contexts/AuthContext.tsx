@@ -5,9 +5,9 @@ import { User, LoginCredentials, RegisterData, RegisterDataPatio, AuthContextDat
 
 // Chaves de armazenamento
 const STORAGE_KEYS = {
-  USER: '@MotoFindr:user',
-  TOKEN: '@MotoFindr:token',
-  PATIOS: '@MotoFindr:patios',
+  USER: '@GS:user',
+  TOKEN: '@GS:token',
+  PATIOS: '@GS:patios',
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);

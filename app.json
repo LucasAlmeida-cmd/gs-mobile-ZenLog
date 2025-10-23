@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "challenge-mottu",
-    "slug": "challenge-mottu",
+    "name": "gs-mobile",
+    "slug": "gs-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -11,7 +11,7 @@
       "newArchEnabled": false
     },
     "android": {
-      "package": "com.lucascmd.challenge",
+      "package": "com.lucascmd.gs",
       "newArchEnabled": false
     },
     "plugins": [

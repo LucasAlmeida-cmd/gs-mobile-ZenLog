@@ -1,128 +1,112 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User, LoginCredentials, RegisterData, AuthResponse, Patio } from '../types/auth';
+import api from './api'; 
 
-// Chaves de armazenamento
+import { jwtDecode } from 'jwt-decode'; 
+// 3. Importe seus tipos
+import { User, LoginCredentials, RegisterDataPatio, RegisterData } from '../types/auth';
+
 const STORAGE_KEYS = {
-  USER: '@MotoFindr:user',
-  TOKEN: '@MotoFindr:token',
-  REGISTERED_USERS: '@MotoFindr:registeredUsers',
-  PATIOS: '@MotoFindr:patios',
+  USER: '@GS:user',
+  TOKEN: '@GS:token',
+  PATIOS: '@GS:patios',
 };
 
+interface LoginResponse {
+  token: string;
+}
 
-// Admin mockado
-const mockAdmin = {
-  id: 'admin',
-  name: 'Administrador',
-  email: 'admin',
-  role: 'admin' as const,
-  image: 'https://randomuser.me/api/portraits/men/3.jpg',
+interface SignInResponse {
+  user: User;
+  token: string;
+}
+
+// --- FUNÇÃO DE LOGIN ---
+const signIn = async (credentials: LoginCredentials): Promise<SignInResponse> => {
+  try {
+    // 1. Chame o endpoint /api/login
+    // ATENÇÃO: Mapeando 'password' (front) para 'senha' (back)
+    const response = await api.post<LoginResponse>('/api/login', {
+      email: credentials.email,
+      senha: credentials.password, 
+    });
+
+    const { token } = response.data;
+
+    // 2. Configure o token no header do Axios para todas as futuras requisições!
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    // 3. Decode o token para extrair o e-mail (o 'subject')
+    // O 'sub' (subject) é o e-mail do usuário que você definiu no Spring
+    const decodedToken: { sub: string, roles?: string[] } = jwtDecode(token);
+
+    // 4. Crie o objeto User que seu AuthContext espera
+    // (Isso é um paliativo. O ideal seria sua API /login já
+    // retornar o objeto User ou você ter um endpoint /api/me)
+    const user: User = {
+      email: decodedToken.sub,
+      // Tente extrair papéis (roles) se você os colocou no token
+      roles: decodedToken.roles || ['USER'], 
+      // Preencha outros campos obrigatórios do seu tipo 'User'
+      // ex: id: '', name: '' 
+    };
+
+    // 5. Retorne o que o AuthContext espera
+    return { user, token };
+
+  } catch (error) {
+    console.error('Erro no authService.signIn:', error);
+    // Limpa o header em caso de falha
+    api.defaults.headers.common['Authorization'] = undefined;
+    throw new Error('Email ou senha inválidos');
+  }
 };
 
-// Lista de usuários cadastrados (pacientes)
-let registeredUsers: (User & { password: string })[] = [];
+// --- FUNÇÃO DE LOGOUT ---
+const signOut = async () => {
+  // Limpa o header do Axios
+  api.defaults.headers.common['Authorization'] = undefined;
+  // O AuthContext já está limpando o AsyncStorage
+};
 
-let registeredPatios: Patio[] = [];
+// --- FUNÇÃO PARA CARREGAR USUÁRIO ---
+const getStoredUser = async (): Promise<User | null> => {
+  // Pega o token salvo
+  const token = await AsyncStorage.getItem(STORAGE_KEYS.TOKEN);
+  
+  if (token) {
+    // ✨ IMPORTANTE: Reconfigure o header do Axios ao abrir o app
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    return null; // Se não tem token, não tem usuário
+  }
+  
+  // Pega os dados do usuário
+  const userJson = await AsyncStorage.getItem(STORAGE_KEYS.USER);
+  if (!userJson) return null;
 
+  return JSON.parse(userJson) as User;
+};
 
+// --- DEMAIS FUNÇÕES ---
+
+const registerPatio = async (data: RegisterDataPatio) => {
+  // Você precisará de um endpoint no seu backend para isso
+  // Ex: await api.post('/api/v1/patios', data);
+  console.log('Registrando pátio:', data);
+  // Simulação
+  return Promise.resolve();
+};
+
+const loadRegisteredUsers = async () => {
+  // Simulação
+  return Promise.resolve();
+};
+
+// --- EXPORTE O SERVIÇO ---
 export const authService = {
-  async signIn(credentials: LoginCredentials): Promise<AuthResponse> {
-    // Verifica se é o admin
-    if (credentials.email === mockAdmin.email && credentials.password === 'admin') {
-      return {
-        user: mockAdmin,
-        token: 'admin-token',
-      };
-    }
-
-    // Verifica se é um paciente registrado
-    const patient = registeredUsers.find(
-      (p) => p.email === credentials.email
-    );
-    if (patient) {
-      // Verifica a senha do paciente
-      if (credentials.password === patient.password) {
-        // Remove a senha do objeto antes de retornar
-        const { password, ...patientWithoutPassword } = patient;
-        return {
-          user: patientWithoutPassword,
-          token: `patient-token-${patient.id}`,
-        };
-      }
-    }
-
-    throw new Error('Email ou senha inválidos');
-  },
-
-
-
-  async registerPatio(patio: Omit<Patio, 'id'>): Promise<Patio> {
-    try {
-      const patiosJson = await AsyncStorage.getItem(STORAGE_KEYS.PATIOS);
-      const patios: Patio[] = patiosJson ? JSON.parse(patiosJson) : [];
-  
-      const newPatio: Patio = {
-        ...patio,
-        id: `patio-${Date.now()}`, 
-      };
-  
-      const updatedPatios = [...patios, newPatio];
-      await AsyncStorage.setItem(STORAGE_KEYS.PATIOS, JSON.stringify(updatedPatios));
-  
-      return newPatio;
-    } catch (error) {
-      console.error('Erro ao registrar pátio:', error);
-      throw error;
-    }
-  },
-  
-
-
-  async loadRegisteredPatios(): Promise<void> {
-    try {
-      const patiosJson = await AsyncStorage.getItem(STORAGE_KEYS.PATIOS);
-      if (patiosJson) {
-        registeredPatios = JSON.parse(patiosJson);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar pátios registrados:', error);
-    }
-  },
-  
-
-  async signOut(): Promise<void> {
-    // Limpa os dados do usuário do AsyncStorage
-    await AsyncStorage.removeItem(STORAGE_KEYS.USER);
-    await AsyncStorage.removeItem(STORAGE_KEYS.TOKEN);
-  },
-
-  async getStoredUser(): Promise<User | null> {
-    try {
-      const userJson = await AsyncStorage.getItem(STORAGE_KEYS.USER);
-      if (userJson) {
-        return JSON.parse(userJson);
-      }
-      return null;
-    } catch (error) {
-      console.error('Erro ao obter usuário armazenado:', error);
-      return null;
-    }
-  },
-
-  // Funções para o admin
-  async getAllUsers(): Promise<User[]> {
-    return [...registeredUsers];
-  },
-
-  // Função para carregar usuários registrados ao iniciar o app
-  async loadRegisteredUsers(): Promise<void> {
-    try {
-      const usersJson = await AsyncStorage.getItem(STORAGE_KEYS.REGISTERED_USERS);
-      if (usersJson) {
-        registeredUsers = JSON.parse(usersJson);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar usuários registrados:', error);
-    }
-  },
+  signIn,
+  signOut,
+  getStoredUser,
+  registerPatio,
+  loadRegisteredUsers,
 };
