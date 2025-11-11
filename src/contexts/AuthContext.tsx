@@ -48,6 +48,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
   };
 
+  const register = async (credentials: RegisterData) => {
+    const response = await authService.register(credentials);
+    setUser(response.user);
+    await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+    await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
+  }
+
 
 
   const signOut = async () => {
@@ -62,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut, register }}>
       {children}
     </AuthContext.Provider>
   );

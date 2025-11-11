@@ -9,7 +9,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AdminDashboardScreen from '../screens/DashboardScreen';
 import UserManagementScreen from '../screens/UserManagementScreen';
-import RegisterScreen from '../screens/RegisterScreenPatio';
+import RegisterScreen from '../screens/RegisterScreen';
 import EditPatioScreen from '../screens/EditPatioScreen'
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -31,6 +31,7 @@ export const AppNavigator: React.FC = () => {
         {!user ? (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
           </>
         ) : (
           <>
@@ -48,13 +49,10 @@ export const AppNavigator: React.FC = () => {
                 />
 
                 <Stack.Screen
-                  name="RegisterPatio"
-                  component={RegisterScreen}
-                />
-                <Stack.Screen
                   name="EditPatio"
                   component={EditPatioScreen}
                 />
+
               </>
             )}
 

@@ -41,6 +41,14 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface RegisterCredentials {
+  nomeUser: string;
+  email: string;
+  cpfUser: string;
+  dataAniversario: string;
+  password: string;
+}
+
 /**
  * Dados necessários para registro
  */
@@ -66,5 +74,6 @@ export interface AuthContextData {
   user: User | null;
   loading: boolean;
   signIn: (credentials: LoginCredentials) => Promise<void>;
+  register: (credentials: RegisterData) => Promise<void>;
   signOut: () => Promise<void>;@rneui
 } 

@@ -21,6 +21,10 @@ export const styles = {
     fontFamily: 'KdamThmorPro',
     color: '#282828',
   },
+  inputTextEnviarRegister: {
+    fontFamily: 'KdamThmorPro',
+    color: '#fff',
+  },
   inputTextEnviarLogin: {
     fontFamily: 'KdamThmorPro',
     color: '#929292',
@@ -35,6 +39,13 @@ export const styles = {
     paddingVertical: 10,
     height: 50,
     borderRadius: 10,
+  },
+  buttonStyleRegister: {
+    paddingVertical: 10,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: 'transparent', 
+    borderColor: '#fff' 
   },
   buttonStyleLogin:{
     backgroundColor: 'transparent',

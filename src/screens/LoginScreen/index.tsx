@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { Link, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
-import {styles, Container, Title, ErrorText } from './styles';
+import { styles, Container, Title, ErrorText } from './styles';
 
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -31,25 +31,6 @@ const LoginScreen: React.FC = () => {
       setLoading(false);
     }
   };
-
-  const handleLoginGoogle = async () => {
-    setLoading(true);
-    // Simulação de login com Google
-    setTimeout(() => {
-      setLoading(false);
-      setError('Login com Google ainda não implementado');
-    }, 1500);
-  };
-
-  const handleLoginGitHub = async () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setError('Login com GitHub ainda não implementado');
-    }, 1500);
-  };
-
-
 
 
   return (
@@ -88,6 +69,15 @@ const LoginScreen: React.FC = () => {
         titleStyle={styles.inputTextEnviar}
       />
 
+      <Button
+        title="Criar conta"
+        type="outline"
+        onPress={() => navigation.navigate('Register')}
+        containerStyle={styles.button as ViewStyle}
+        buttonStyle={[styles.buttonStyleRegister]}
+        titleStyle={[styles.inputTextEnviarRegister]}
+      />
+
       <Link to="/ForgotPassword" style={styles.pass}>
         Esqueceu a senha ?
       </Link>
@@ -117,23 +107,7 @@ const LoginScreen: React.FC = () => {
         }} />
       </View>
 
-      <Button
-        title="Entrar com o Google"
-        onPress={handleLoginGoogle}
-        loading={loading}
-        containerStyle={styles.button as ViewStyle}
-        buttonStyle={styles.buttonStyleLogin}
-        titleStyle={styles.inputTextEnviarLogin}
-      />
-      
-      <Button
-        title="Entrar com o Github"
-        onPress={handleLoginGitHub}
-        loading={loading}
-        containerStyle={styles.button as ViewStyle}
-        buttonStyle={styles.buttonStyleLogin}
-        titleStyle={styles.inputTextEnviarLogin}
-      />
+
 
 
 

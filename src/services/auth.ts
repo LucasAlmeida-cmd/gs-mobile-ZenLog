@@ -3,7 +3,7 @@ import api from './api';
 
 import { jwtDecode } from 'jwt-decode';
 // 3. Importe seus tipos
-import { User, LoginCredentials, RegisterData, AuthResponse } from '../types/auth';
+import { User, LoginCredentials, RegisterData, AuthResponse, RegisterCredentials } from '../types/auth';
 
 const STORAGE_KEYS = {
   USER: '@GS:user',
@@ -49,6 +49,25 @@ const signOut = async () => {
   // O AuthContext já está limpando o AsyncStorage
 };
 
+// --- FUNÇÃO DE REGISTER ---
+const register = async (credentials: RegisterCredentials) => {
+  try {
+    const response = await api.post('/usuarios/salvar', {
+      nomeUser: credentials.nomeUser,
+      email: credentials.email,
+      cpfUser: credentials.cpfUser,
+      dataAniversario: credentials.dataAniversario,
+      password: credentials.password,
+    });
+
+    return response.data; // opcional, caso queira retornar o usuário criado
+  } catch (error: any) {
+    console.error('Erro no authService.register:', error);
+    throw new Error('Erro ao criar usuário. Verifique os dados e tente novamente.');
+  }
+};
+
+
 // --- FUNÇÃO PARA CARREGAR USUÁRIO ---
 const getStoredUser = async (): Promise<User | null> => {
   // Pega o token salvo
@@ -82,5 +101,6 @@ export const authService = {
   signIn,
   signOut,
   getStoredUser,
+  register,
   loadRegisteredUsers,
 };
