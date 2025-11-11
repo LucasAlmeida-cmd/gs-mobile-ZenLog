@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authService } from '../services/auth';
-import { User, LoginCredentials, RegisterData, RegisterDataPatio, AuthContextData } from '../types/auth';
+import { User, LoginCredentials, RegisterData, AuthContextData } from '../types/auth';
 
 // Chaves de armazenamento
 const STORAGE_KEYS = {
@@ -41,24 +41,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Erro ao carregar usuários registrados:', error);
     }
   };
-
   const signIn = async (credentials: LoginCredentials) => {
-    try {
-      const response = await authService.signIn(credentials);
-      setUser(response.user);
-      await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
-      await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const registerPatio = async (data: RegisterDataPatio) => {
-    try {
-      await authService.registerPatio(data);
-    } catch (error) {
-      throw error;
-    }
+    const response = await authService.signIn(credentials);
+    setUser(response.user);
+    await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+    await AsyncStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
   };
 
 
@@ -75,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, registerPatio,signOut }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

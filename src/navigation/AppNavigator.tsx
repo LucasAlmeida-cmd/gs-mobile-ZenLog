@@ -7,7 +7,7 @@ import { RootStackParamList } from '../types/navigation';
 // Screens
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import AdminDashboardScreen from '../screens/AdminDashboardScreen';
+import AdminDashboardScreen from '../screens/DashboardScreen';
 import UserManagementScreen from '../screens/UserManagementScreen';
 import RegisterScreen from '../screens/RegisterScreenPatio';
 import EditPatioScreen from '../screens/EditPatioScreen'
@@ -34,7 +34,7 @@ export const AppNavigator: React.FC = () => {
           </>
         ) : (
           <>
-            {user.role === 'admin' && (
+            {user.role === 'usuario' && (
               <>
                 <Stack.Screen
                   name="AdminDashboard"

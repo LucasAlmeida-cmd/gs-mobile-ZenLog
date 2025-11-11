@@ -8,39 +8,30 @@
 /**
  * Perfis de usuário disponíveis no sistema
  */
-export type UserRole = 'admin';
+export type UserRole = 'admin' | 'usuario';
 
 /**
  * Interface base do usuário
  */
 export interface BaseUser {
-  id: string;
-  name: string;
+  id?: string | null;
+  name?: string | null;
   email: string;
   role: UserRole;
-  image: string;
 }
 
-
-
-/**
- * Interface do administrador
- */
-export interface Admin extends BaseUser {
-  role: 'admin';
+export interface AuthResponse {
+  user: User;
+  token: string;
 }
+
 
 /**
  * Interface do usuário autenticado
  */
-export type User = Admin ;
+export type User = BaseUser;
 
-export interface Patio {
-  id: string;
-  identificacao: string;
-  largura: string;
-  comprimento: string;
-}
+
 
 /**
  * Dados necessários para login
@@ -58,17 +49,13 @@ export interface RegisterData {
   email: string;
   password: string;
 }
-export interface RegisterDataPatio {
-  identificacao: string;
-  largura: string;
-  comprimento: string;
-}
+
 
 /**
  * Resposta da API de autenticação
  */
 export interface AuthResponse {
-  user: User;
+  user: BaseUser;
   token: string;
 }
 
@@ -79,6 +66,5 @@ export interface AuthContextData {
   user: User | null;
   loading: boolean;
   signIn: (credentials: LoginCredentials) => Promise<void>;
-  registerPatio: (data: RegisterDataPatio) => Promise<void>;
   signOut: () => Promise<void>;@rneui
 } 
