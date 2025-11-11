@@ -23,10 +23,10 @@ const AdminDashboardScreen: React.FC = () => {
     <Container>
       <Header />
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Title>Menu Administrativo</Title>
+        <Title>Menu Principal</Title>
 
         <Button
-          title="Consultar Pátios"
+          title="Consultar Logs Diarios"
           onPress={() => navigation.navigate('UserManagement')}
           containerStyle={styles.button as ViewStyle}
           buttonStyle={styles.buttonStyle}

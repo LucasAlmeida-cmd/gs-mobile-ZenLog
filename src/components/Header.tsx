@@ -26,12 +26,6 @@ const Header: React.FC = () => {
   return (
     <Container>
       <UserInfo>
-        <Avatar
-          size="medium"
-          rounded
-          source={{ uri: user.image }}
-          containerStyle={styles.avatar}
-        />
         <TextContainer>
           <WelcomeText>Bem-vindo(a),</WelcomeText>
           <UserName>{user.name}</UserName>

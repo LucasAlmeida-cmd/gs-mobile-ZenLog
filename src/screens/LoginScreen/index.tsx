@@ -54,7 +54,7 @@ const LoginScreen: React.FC = () => {
 
   return (
     <Container>
-      <Title>MotoFindr</Title>
+      <Title>ZenLog</Title>
 
       <Input
         placeholder="Email"
