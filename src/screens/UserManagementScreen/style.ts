@@ -6,6 +6,8 @@ export const styles = {
     padding: 20,
     paddingBottom: 40,
   },
+
+  
   
   actionButton: {
     width: '48%',

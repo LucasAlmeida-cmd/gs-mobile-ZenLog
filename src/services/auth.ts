@@ -127,6 +127,17 @@ const logService = {
   updateLog: async (id: number, log: any): Promise<void> => {
     await api.put(`/log/atualizar/${id}`, log);
   },
+
+  createLog: async (data: any): Promise<any> => {
+    try {
+      const response = await api.post('/log/salvar', data);
+      return response.data;
+    
+    } catch (error) {
+      console.error('Erro ao criar log:', error); 
+      throw error; 
+    }
+  },
 };
 
 

@@ -22,4 +22,6 @@ export type RootStackParamList = {
   UserManagement: undefined;
   Register: undefined;
   UpdateProfile: undefined;
+  EditLog: { logId: number };
+  AddLog: undefined;
 };
