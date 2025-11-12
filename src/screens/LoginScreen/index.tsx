@@ -78,45 +78,12 @@ const LoginScreen: React.FC = () => {
         titleStyle={[styles.inputTextEnviarRegister]}
       />
 
-      <Link to="/ForgotPassword" style={styles.pass}>
-        Esqueceu a senha ?
-      </Link>
-
-      <View style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 20,
-        width: '100%',
-        backgroundColor: 'transparent'
-      }}>
-        <View style={{
-          flex: 1,
-          height: 2,
-          backgroundColor: '#ffffff'
-        }} />
-        <Text style={{
-          marginHorizontal: 10,
-          color: '#ffffff',
-          fontSize: 10,
-          fontFamily: 'KdamThmorPro'
-        }}>OU</Text>
-        <View style={{
-          flex: 1,
-          height: 2,
-          backgroundColor: '#ffffff'
-        }} />
-      </View>
 
 
 
 
 
-      <Text style={styles.hint}>
-        Use as credenciais de exemplo:
-      </Text>
-      <Text style={styles.credentials}>
-        Admin: admin/admin
-      </Text>
+
     </Container>
   );
 };
