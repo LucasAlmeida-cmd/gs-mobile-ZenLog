@@ -4,10 +4,11 @@ import { Input, Button, Text } from 'react-native-elements';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useTheme } from 'styled-components/native';
 import { RootStackParamList } from '../../types/navigation';
 import { authService } from '../../services/auth';
 import Header from '../../components/Header';
-import { styles, Container, Title } from './style';
+import { Container, Title, styles } from './style';
 
 type EditLogScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'EditLog'>;
 
@@ -19,6 +20,7 @@ const EditLogScreen: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation<EditLogScreenNavigationProp>();
   const { logId } = route.params as RouteParams;
+  const theme = useTheme();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -104,8 +106,10 @@ const EditLogScreen: React.FC = () => {
       <Container>
         <Header />
         <View style={styles.centered}>
-          <ActivityIndicator size="large" color="#fff" />
-          <Text style={styles.loadingText}>Carregando log...</Text>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <Text style={[styles.loadingText, { color: theme.colors.text }]}>
+            Carregando log...
+          </Text>
         </View>
       </Container>
     );
@@ -125,10 +129,10 @@ const EditLogScreen: React.FC = () => {
             if (errors.data) setErrors({ ...errors, data: '' });
           }}
           placeholder="AAAA-MM-DD"
-          inputStyle={styles.input}
-          labelStyle={styles.label}
+          inputStyle={[styles.input, { color: theme.colors.text }]}
+          labelStyle={[styles.label, { color: theme.colors.textSecondary }]}
           errorMessage={errors.data}
-          leftIcon={<MaterialIcons name="date-range" size={20} color="#fff" />}
+          leftIcon={<MaterialIcons name="date-range" size={20} color={theme.colors.icon} />}
         />
 
         <Input
@@ -139,10 +143,10 @@ const EditLogScreen: React.FC = () => {
             if (errors.emocao) setErrors({ ...errors, emocao: '' });
           }}
           placeholder="Como você se sentiu?"
-          inputStyle={styles.input}
-          labelStyle={styles.label}
+          inputStyle={[styles.input, { color: theme.colors.text }]}
+          labelStyle={[styles.label, { color: theme.colors.textSecondary }]}
           errorMessage={errors.emocao}
-          leftIcon={<MaterialIcons name="mood" size={20} color="#fff" />}
+          leftIcon={<MaterialIcons name="mood" size={20} color={theme.colors.icon} />}
         />
 
         <Input
@@ -153,10 +157,10 @@ const EditLogScreen: React.FC = () => {
             setLog({ ...log, horasSono: parseInt(text) || 0 });
             if (errors.horasSono) setErrors({ ...errors, horasSono: '' });
           }}
-          inputStyle={styles.input}
-          labelStyle={styles.label}
+          inputStyle={[styles.input, { color: theme.colors.text }]}
+          labelStyle={[styles.label, { color: theme.colors.textSecondary }]}
           errorMessage={errors.horasSono}
-          leftIcon={<MaterialIcons name="bed" size={20} color="#fff" />}
+          leftIcon={<MaterialIcons name="bed" size={20} color={theme.colors.icon} />}
         />
 
         <Input
@@ -167,10 +171,10 @@ const EditLogScreen: React.FC = () => {
             setLog({ ...log, aguaLitros: parseFloat(text) || 0 });
             if (errors.aguaLitros) setErrors({ ...errors, aguaLitros: '' });
           }}
-          inputStyle={styles.input}
-          labelStyle={styles.label}
+          inputStyle={[styles.input, { color: theme.colors.text }]}
+          labelStyle={[styles.label, { color: theme.colors.textSecondary }]}
           errorMessage={errors.aguaLitros}
-          leftIcon={<MaterialIcons name="opacity" size={20} color="#fff" />}
+          leftIcon={<MaterialIcons name="opacity" size={20} color={theme.colors.icon} />}
         />
 
         <Input
@@ -178,16 +182,19 @@ const EditLogScreen: React.FC = () => {
           value={log.notas}
           onChangeText={(text) => setLog({ ...log, notas: text })}
           placeholder="Adicione observações..."
-          inputStyle={styles.input}
-          labelStyle={styles.label}
-          leftIcon={<MaterialIcons name="notes" size={20} color="#fff" />}
+          inputStyle={[styles.input, { color: theme.colors.text }]}
+          labelStyle={[styles.label, { color: theme.colors.textSecondary }]}
+          leftIcon={<MaterialIcons name="notes" size={20} color={theme.colors.icon} />}
         />
 
         <Button
           title={saving ? 'Salvando...' : 'Salvar Alterações'}
           onPress={handleUpdate}
           loading={saving}
-          buttonStyle={styles.saveButton}
+          buttonStyle={[
+            styles.saveButton,
+            { backgroundColor: theme.colors.primary },
+          ]}
           icon={
             <MaterialIcons
               name="save"

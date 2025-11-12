@@ -3,13 +3,13 @@ import { StyleSheet } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: #121212;
+  background-color: ${({ theme }) => theme.colors.fundoPadrao};
   padding-top: 40px;
 `;
 
 export const Title = styled.Text`
   font-size: 24px;
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.text};
   text-align: center;
   margin-bottom: 20px;
   font-weight: bold;
@@ -20,13 +20,13 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
-    color: '#ffffff',
+    fontSize: 16,
+    
   },
   label: {
-    color: '#cccccc',
+    fontSize: 14,
   },
   saveButton: {
-    backgroundColor: '#2ecc71',
     borderRadius: 10,
     marginTop: 10,
   },
@@ -36,7 +36,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#fff',
     marginTop: 10,
   },
 });

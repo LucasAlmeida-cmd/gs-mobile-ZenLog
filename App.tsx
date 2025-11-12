@@ -4,10 +4,11 @@ import * as Font from 'expo-font';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { ThemeProvider } from 'styled-components/native';
-import theme from './src/styles/theme';
+import { ThemeProviderCustom, useTheme } from './src/contexts/ThemeContext';
 import { StatusBar, View, ActivityIndicator } from 'react-native';
 
-export default function App() {
+function AppContent() {
+  const { theme } = useTheme(); 
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -28,11 +29,19 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <StatusBar 
-          barStyle="light-content" 
-          backgroundColor={theme.colors.primary} 
+          barStyle={theme.colors.background === '#121212' ? 'light-content' : 'dark-content'} 
+          backgroundColor={theme.colors.primary}
         />
         <AppNavigator />
       </AuthProvider>
     </ThemeProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProviderCustom>
+      <AppContent />
+    </ThemeProviderCustom>
   );
 }

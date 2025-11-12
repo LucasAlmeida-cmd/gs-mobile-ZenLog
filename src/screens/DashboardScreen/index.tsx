@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { ScrollView, ViewStyle, TextStyle } from 'react-native';
-import { Button, ListItem, Text } from 'react-native-elements';
+import React from 'react';
+import { ScrollView, ViewStyle } from 'react-native';
+import { Button } from 'react-native-elements';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/navigation';
+import { useTheme } from 'styled-components/native';
+
 import Header from '../../components/Header';
-import { styles, Container, Title} from './styles'
-
-
+import { makeStyles, Container, Title } from './styles';
 
 type AdminDashboardScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'AdminDashboard'>;
@@ -18,15 +17,18 @@ type AdminDashboardScreenProps = {
 const AdminDashboardScreen: React.FC = () => {
   const { user, signOut } = useAuth();
   const navigation = useNavigation<AdminDashboardScreenProps['navigation']>();
+  const theme = useTheme(); 
+  const styles = makeStyles(theme);
 
   return (
     <Container>
       <Header />
+
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Title>Menu Principal</Title>
 
         <Button
-          title="Consultar Logs Diarios"
+          title="Consultar Logs Diários"
           onPress={() => navigation.navigate('UserManagement')}
           containerStyle={styles.button as ViewStyle}
           buttonStyle={styles.buttonStyle}
@@ -51,7 +53,5 @@ const AdminDashboardScreen: React.FC = () => {
     </Container>
   );
 };
-
-
 
 export default AdminDashboardScreen;

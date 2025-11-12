@@ -9,18 +9,20 @@ import { RootStackParamList } from '../../types/navigation';
 import Header from '../../components/Header';
 import { authService } from '../../services/auth';
 import { useApi } from '../../hooks/useApi';
-
+import { useTheme } from '../../contexts/ThemeContext';
 import {
-  styles,
   Container,
   Title,
   LogCard,
   LogHeader,
   LogDetails,
-  LoadingText,
-  EmptyText,
   ButtonContainer,
-  RetryText
+  LogIdentificacao,
+  LogEmocao,
+  LogDetail,
+  EmptyText,
+  LoadingText,
+  RetryText,
 } from "../UserManagementScreen/style"
 
 type UserManagementScreenProps = {
@@ -41,8 +43,8 @@ interface Log {
 
 const UserManagementScreen: React.FC = () => {
   const navigation = useNavigation<UserManagementScreenProps['navigation']>();
+  const { theme } = useTheme();
   const { data: logs, loading, error, execute: refreshLogs } = useApi<Log[]>(authService.logService.getLogs);
-
   const [deletingLogs, setDeletingLogs] = useState<Record<number, boolean>>({});
 
   const handleDelete = async (id: number) => {
@@ -64,87 +66,84 @@ const UserManagementScreen: React.FC = () => {
   );
 
   return (
-    <Container>
+    <Container themeColors={theme.colors}>
       <Header />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Title>Meus Logs</Title>
+      <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 40 }}>
+        <Title themeColors={theme.colors}>Meus Logs</Title>
 
         <View style={{ alignItems: 'center', marginVertical: 10 }}>
           <Button
             title="Adicionar Novo Log"
             onPress={() => navigation.navigate('AddLog')}
             buttonStyle={{
-              backgroundColor: '#4CAF50',
+              backgroundColor: theme.colors.verde,
               paddingHorizontal: 25,
               paddingVertical: 10,
               borderRadius: 10,
             }}
-            icon={<MaterialIcons name="add" size={20} color="#fff" style={{ marginRight: 8 }} />}
+            icon={<MaterialIcons name="add" size={20} color={theme.colors.white} style={{ marginRight: 8 }} />}
           />
         </View>
 
         {loading ? (
-
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#ffffff" />
-            <LoadingText>Carregando Logs...</LoadingText>
+          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+            <ActivityIndicator size="large" color={theme.colors.verde} />
+            <LoadingText themeColors={theme.colors}>Carregando Logs...</LoadingText>
           </View>
         ) : error ? (
-
-          <View style={styles.errorContainer}>
-            <MaterialIcons name="error" size={40} color="#ff6b6b" />
-            <Text style={styles.errorText}>Erro ao carregar logs</Text>
-            <RetryText onPress={refreshLogs}>Tentar novamente</RetryText>
+          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+            <MaterialIcons name="error" size={40} color={theme.colors.error} />
+            <Text style={{ color: theme.colors.error, marginVertical: 10, textAlign: 'center', fontSize: 16 }}>
+              Erro ao carregar logs
+            </Text>
+            <RetryText themeColors={theme.colors} onPress={refreshLogs}>
+              Tentar novamente
+            </RetryText>
           </View>
         ) : !logs || logs.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <MaterialIcons name="inbox" size={40} color="#929292" />
-            <EmptyText >Nenhum log cadastrado</EmptyText>
+          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}>
+            <MaterialIcons name="inbox" size={40} color={theme.colors.textSecondary} />
+            <EmptyText themeColors={theme.colors}>Nenhum log cadastrado</EmptyText>
           </View>
         ) : (
           logs.map((log) => (
-            <LogCard key={log.id}>
-
-              <LogHeader>
-
-                <Text style={styles.LogIdentificacao}>{log.data}</Text>
-
-                <Text style={styles.LogEmocao}>{log.emocao}</Text>
+            <LogCard key={log.id} themeColors={theme.colors}>
+              <LogHeader themeColors={theme.colors}>
+                <LogIdentificacao themeColors={theme.colors}>{log.data}</LogIdentificacao>
+                <LogEmocao themeColors={theme.colors}>{log.emocao}</LogEmocao>
               </LogHeader>
 
               <LogDetails>
-
-                <Text style={styles.LogDetail}>💤 Horas de sono: {log.horasSono}</Text>
-                <Text style={styles.LogDetail}>💧 Água: {log.aguaLitros}</Text>
-                <Text style={styles.LogDetail}>💪 Exercício: {log.fezExercicio ? 'Sim' : 'Não'}</Text>
-                <Text style={styles.LogDetail}>🧘 Descanso mental: {log.descansouMente ? 'Sim' : 'Não'}</Text>
-                <Text style={styles.LogDetail}>📝 Notas: {log.notas || '*Sem notas*'}</Text>
+                <LogDetail themeColors={theme.colors}>💤 Horas de sono: {log.horasSono}</LogDetail>
+                <LogDetail themeColors={theme.colors}>💧 Água: {log.aguaLitros}</LogDetail>
+                <LogDetail themeColors={theme.colors}>💪 Exercício: {log.fezExercicio ? 'Sim' : 'Não'}</LogDetail>
+                <LogDetail themeColors={theme.colors}>🧘 Descanso mental: {log.descansouMente ? 'Sim' : 'Não'}</LogDetail>
+                <LogDetail themeColors={theme.colors}>📝 Notas: {log.notas || '*Sem notas*'}</LogDetail>
               </LogDetails>
 
               <ButtonContainer>
                 <Button
                   title={deletingLogs[log.id] ? "" : "Deletar"}
                   onPress={() => handleDelete(log.id)}
-                  containerStyle={styles.actionButton}
-                  buttonStyle={styles.deleteButton}
-                  titleStyle={styles.deleteButtonText}
+                  containerStyle={{ width: '48%' }}
+                  buttonStyle={{ backgroundColor: theme.colors.error, paddingVertical: 10, borderRadius: 8 }}
+                  titleStyle={{ color: theme.colors.white, fontFamily: 'KdamThmorPro', fontSize: 14 }}
                   disabled={deletingLogs[log.id]}
                   icon={deletingLogs[log.id] ?
-                    <ActivityIndicator size="small" color="#ffffff" /> :
-                    <MaterialIcons name="delete" size={16} color="#ffffff" style={{ marginRight: 5 }} />}
+                    <ActivityIndicator size="small" color={theme.colors.white} /> :
+                    <MaterialIcons name="delete" size={16} color={theme.colors.white} style={{ marginRight: 5 }} />}
                 />
 
                 <Button
                   title="Editar"
                   onPress={() => navigation.navigate('EditLog', { logId: log.id })}
-                  containerStyle={styles.actionButton}
-                  buttonStyle={styles.updateButton}
-                  titleStyle={styles.updateButtonText}
-                  icon={<MaterialIcons name="edit" size={16} color="#ffffff" style={{ marginRight: 5 }} />}
+                  containerStyle={{ width: '48%' }}
+                  buttonStyle={{ backgroundColor: theme.colors.verde, paddingVertical: 10, borderRadius: 8 }}
+                  titleStyle={{ color: theme.colors.white, fontFamily: 'KdamThmorPro', fontSize: 14 }}
+                  icon={<MaterialIcons name="edit" size={16} color={theme.colors.white} style={{ marginRight: 5 }} />}
                 />
               </ButtonContainer>
             </LogCard>
-
           ))
         )}
       </ScrollView>

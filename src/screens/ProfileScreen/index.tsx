@@ -1,13 +1,21 @@
 import React from 'react';
-import { Button, ListItem } from 'react-native-elements';
-import { useAuth } from '../../contexts/AuthContext';
+import { ScrollView } from 'react-native';
+import { Button } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext'; 
 import Header from '../../components/Header';
-import { styles, Container, ScrollView ,Title ,ProfileCard,Avatar, Name, Email, RoleBadge , RoleText, SpecialtyText} from './style'
-
-
+import {
+  Container,
+  Title,
+  ProfileCard,
+  Name,
+  Email,
+  RoleBadge,
+  RoleText,
+} from './style';
 
 type ProfileScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Profile'>;
@@ -16,6 +24,7 @@ type ProfileScreenProps = {
 const ProfileScreen: React.FC = () => {
   const { user, signOut } = useAuth();
   const navigation = useNavigation<ProfileScreenProps['navigation']>();
+  const { theme } = useTheme(); 
 
   const getRoleText = (role: string) => {
     switch (role) {
@@ -29,40 +38,43 @@ const ProfileScreen: React.FC = () => {
   return (
     <Container>
       <Header />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Title>Meu Perfil</Title>
+      <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <Title>{`Meu Perfil`}</Title>
 
-        <ProfileCard>
-          <Name>{user?.name}</Name>
-          <Email>{user?.email}</Email>
-          <RoleBadge role={user?.role || ''}>
-            <RoleText>{getRoleText(user?.role || '')}</RoleText>
+        <ProfileCard theme={theme}>
+          <Name theme={theme}>{user?.name}</Name>
+          <Email theme={theme}>{user?.email}</Email>
+          <RoleBadge role={user?.role || ''} theme={theme}>
+            <RoleText theme={theme}>{getRoleText(user?.role || '')}</RoleText>
           </RoleBadge>
         </ProfileCard>
 
         <Button
           title="Editar Perfil"
           onPress={() => navigation.navigate('UpdateProfile')}
-          containerStyle={styles.button as ViewStyle}
-          buttonStyle={styles.buttonStyle}
-          titleStyle={styles.inputText}
+          buttonStyle={{
+            backgroundColor: theme.colors.verde,
+            borderRadius: 10,
+            paddingVertical: 12,
+            marginBottom: 12,
+          }}
+          titleStyle={{ color: theme.colors.text }}
         />
 
         <Button
-          title="Voltar"
-          onPress={() => navigation.goBack()}
-          containerStyle={styles.button as ViewStyle}
-          buttonStyle={styles.buttonStyle}
-          titleStyle={styles.inputText}
+          title="Sair"
+          onPress={signOut}
+          buttonStyle={{
+            backgroundColor: theme.colors.error,
+            borderRadius: 10,
+            paddingVertical: 12,
+            marginBottom: 12,
+          }}
+          titleStyle={{ color: theme.colors.text }}
         />
-
-
-
       </ScrollView>
     </Container>
   );
 };
-
-
 
 export default ProfileScreen;

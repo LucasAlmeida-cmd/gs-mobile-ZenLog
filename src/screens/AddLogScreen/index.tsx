@@ -7,12 +7,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
 import { authService } from '../../services/auth';
 import Header from '../../components/Header';
-import { styles } from './style';
+import { makeStyles } from './style';
+import { useTheme } from 'styled-components/native';
 
 type AddLogScreenNavigation = NativeStackNavigationProp<RootStackParamList, 'AddLog'>;
 
 const AddLogScreen: React.FC = () => {
   const navigation = useNavigation<AddLogScreenNavigation>();
+  const theme = useTheme();
+  const styles = makeStyles(theme);
 
   const [data, setData] = useState('');
   const [emocao, setEmocao] = useState('');
@@ -98,6 +101,7 @@ const AddLogScreen: React.FC = () => {
 
       <Input
         placeholder="Data (YYYY-MM-DD)"
+        placeholderTextColor={theme.colors.text}
         value={data}
         onChangeText={(text) => {
           setData(text);
@@ -105,11 +109,12 @@ const AddLogScreen: React.FC = () => {
         }}
         inputStyle={styles.input}
         errorMessage={errors.data}
-        leftIcon={<MaterialIcons name="date-range" size={20} color="#fff" />}
+        leftIcon={<MaterialIcons name="date-range" size={20} color={theme.colors.text} />}
       />
 
       <Input
         placeholder="Emoção"
+        placeholderTextColor={theme.colors.text}
         value={emocao}
         onChangeText={(text) => {
           setEmocao(text);
@@ -117,11 +122,12 @@ const AddLogScreen: React.FC = () => {
         }}
         inputStyle={styles.input}
         errorMessage={errors.emocao}
-        leftIcon={<MaterialIcons name="mood" size={20} color="#fff" />}
+        leftIcon={<MaterialIcons name="mood" size={20} color={theme.colors.text} />}
       />
 
       <Input
         placeholder="Horas de sono"
+        placeholderTextColor={theme.colors.text}
         keyboardType="numeric"
         value={horasSono}
         onChangeText={(text) => {
@@ -130,11 +136,12 @@ const AddLogScreen: React.FC = () => {
         }}
         inputStyle={styles.input}
         errorMessage={errors.horasSono}
-        leftIcon={<MaterialIcons name="bed" size={20} color="#fff" />}
+        leftIcon={<MaterialIcons name="bed" size={20} color={theme.colors.text} />}
       />
 
       <Input
         placeholder="Litros de água"
+        placeholderTextColor={theme.colors.text}
         keyboardType="numeric"
         value={aguaLitros}
         onChangeText={(text) => {
@@ -143,7 +150,7 @@ const AddLogScreen: React.FC = () => {
         }}
         inputStyle={styles.input}
         errorMessage={errors.aguaLitros}
-        leftIcon={<MaterialIcons name="opacity" size={20} color="#fff" />}
+        leftIcon={<MaterialIcons name="opacity" size={20} color={theme.colors.text} />}
       />
 
       <CheckBox
@@ -164,10 +171,11 @@ const AddLogScreen: React.FC = () => {
 
       <Input
         placeholder="Notas (opcional)"
+        placeholderTextColor={theme.colors.text}
         value={notas}
         onChangeText={setNotas}
         inputStyle={styles.input}
-        leftIcon={<MaterialIcons name="notes" size={20} color="#fff" />}
+        leftIcon={<MaterialIcons name="notes" size={20} color={theme.colors.text} />}
       />
 
       <View style={{ marginTop: 20 }}>
@@ -177,9 +185,7 @@ const AddLogScreen: React.FC = () => {
           buttonStyle={styles.button}
           disabled={loading}
           icon={
-            loading ? (
-              <ActivityIndicator color="#fff" style={{ marginLeft: 10 }} />
-            ) : undefined
+            loading ? <ActivityIndicator color="#fff" style={{ marginLeft: 10 }} /> : undefined
           }
         />
       </View>
