@@ -112,12 +112,21 @@ const getStoredUser = async (): Promise<User | null> => {
   return JSON.parse(userJson) as User;
 };
 
-// --- FUNÇÃO PARA CARREGAR LOGS ---
+// --- FUNÇÃO PARA ATUALIZAR E BUSCAR LOG ---
 const logService = {
   getLogs: async (): Promise<Log[]> => {
     const response = await api.get('/log/meusLogs');
-    return response.data.content; 
-  }
+    return response.data.content;
+  },
+
+  getLogById: async (id: number): Promise<Log> => {
+    const response = await api.get(`/log/buscarPeloID/${id}`);
+    return response.data;
+  },
+
+  updateLog: async (id: number, log: any): Promise<void> => {
+    await api.put(`/log/atualizar/${id}`, log);
+  },
 };
 
 
@@ -131,6 +140,9 @@ const deleteLog = async (id: number | string): Promise<void> => {
     throw error;
   }
 };
+
+
+
 
 // --- DEMAIS FUNÇÕES ---
 
