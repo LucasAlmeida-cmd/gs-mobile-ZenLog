@@ -21,10 +21,5 @@ export type RootStackParamList = {
   AdminDashboard: undefined;
   UserManagement: undefined;
   Register: undefined;
-  EditPatio: {
-    idPatio: string;
-    identificacao: string;
-    largura: number;
-    comprimento: number;
-  };
+  UpdateProfile: undefined;
 };

@@ -14,9 +14,12 @@ export type UserRole = 'admin' | 'usuario';
  * Interface base do usuário
  */
 export interface BaseUser {
-  id?: string | null;
+  id?: string | null | number;
   name?: string | null;
+  cpfUser?: string;
+  dataAniversario?: string;
   email: string;
+  password?: string;
   role: UserRole;
 }
 
@@ -49,6 +52,17 @@ export interface RegisterCredentials {
   password: string;
 }
 
+export interface UpdateUserCredentials {
+  id: number;
+  nomeUser?: string;
+  email?: string;
+  cpfUser?: string;
+  dataAniversario?: string;
+  password?: string;
+}
+
+
+
 /**
  * Dados necessários para registro
  */
@@ -74,6 +88,7 @@ export interface AuthContextData {
   user: User | null;
   loading: boolean;
   signIn: (credentials: LoginCredentials) => Promise<void>;
-  register: (credentials: RegisterData) => Promise<void>;
-  signOut: () => Promise<void>;@rneui
+  register: (credentials: RegisterCredentials) => Promise<void>;
+  updateUser: (id: number, credentials: UpdateUserCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
 } 

@@ -33,13 +33,20 @@ const ProfileScreen: React.FC = () => {
         <Title>Meu Perfil</Title>
 
         <ProfileCard>
-          <Avatar source={{ uri: user?.image || 'https://via.placeholder.com/150' }} />
           <Name>{user?.name}</Name>
           <Email>{user?.email}</Email>
           <RoleBadge role={user?.role || ''}>
             <RoleText>{getRoleText(user?.role || '')}</RoleText>
           </RoleBadge>
         </ProfileCard>
+
+        <Button
+          title="Editar Perfil"
+          onPress={() => navigation.navigate('UpdateProfile')}
+          containerStyle={styles.button as ViewStyle}
+          buttonStyle={styles.buttonStyle}
+          titleStyle={styles.inputText}
+        />
 
         <Button
           title="Voltar"

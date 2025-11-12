@@ -3,7 +3,7 @@ import api from './api';
 
 import { jwtDecode } from 'jwt-decode';
 // 3. Importe seus tipos
-import { User, LoginCredentials, RegisterData, AuthResponse, RegisterCredentials } from '../types/auth';
+import { User, LoginCredentials, RegisterData, AuthResponse, RegisterCredentials, UpdateUserCredentials } from '../types/auth';
 
 const STORAGE_KEYS = {
   USER: '@GS:user',
@@ -77,6 +77,25 @@ const register = async (credentials: RegisterCredentials) => {
   }
 };
 
+// --- FUNÇÃO DE ATUALIZAR FUNCIONARIO ---
+const updateUser = async (id: number, credentials: RegisterCredentials) => {
+  try {
+    const response = await api.put(`/usuarios/atualizar/${id}`, {
+      nomeUser: credentials.nomeUser,
+      email: credentials.email,
+      cpfUser: credentials.cpfUser,
+      dataAniversario: credentials.dataAniversario,
+      password: credentials.password,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error('Erro ao atualizar usuário:', error);
+    throw new Error('Erro ao atualizar usuário. Verifique os dados e tente novamente.');
+  }
+};
+
+
 
 // --- FUNÇÃO PARA CARREGAR USUÁRIO ---
 const getStoredUser = async (): Promise<User | null> => {
@@ -117,5 +136,6 @@ export const authService = {
   getStoredUser,
   register,
   loadRegisteredUsers,
+  updateUser,
   logService,
 };

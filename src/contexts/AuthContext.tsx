@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authService } from '../services/auth';
-import { User, LoginCredentials, RegisterData, AuthContextData } from '../types/auth';
+import { User, LoginCredentials, RegisterData, AuthContextData, UpdateUserCredentials } from '../types/auth';
 
 // Chaves de armazenamento
 const STORAGE_KEYS = {
@@ -68,8 +68,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateUser = async (id: number, credentials: UpdateUserCredentials) => {
+    try {
+      // chama o service pra atualizar no backend
+      const updatedUser = await authService.updateUser(id, credentials);
+
+      // atualiza o estado global e o AsyncStorage
+      setUser(updatedUser);
+      await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
+    } catch (error) {
+      console.error('Erro ao atualizar usuário no contexto:', error);
+      throw error;
+    }
+  };
+
+
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signOut, register }}>
+    <AuthContext.Provider value={{ user, loading, signIn, signOut, register, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
