@@ -1,23 +1,39 @@
-# DOCUMENTAÇÃO CHALLENGE - MOBILE
+# ZenLog: Ferramenta de Monitoramento de Bem-Estar
 
-Este projeto é referente nossa solução para a empresa **Mottu**.
+## 🎯 O Projeto
 
+**ZenLog** é uma plataforma web projetada para atuar como um "Log de Emoções" focado no ambiente de trabalho. A ferramenta permite que os colaboradores registrem diariamente suas percepções emocionais e hábitos de vida, fornecendo às empresas um panorama claro sobre o bem-estar de suas equipes.
 
-## Proposta do projeto: 
+Diferente de um chatbot, o ZenLog funciona como um diário digital estruturado, onde os dados são inputados ativamente pelo usuário em uma página dedicada ao final do dia.
 
-  O projeto MotoFindr surge para resolver um desafio crítico enfrentado pela Mottu: a dificuldade de gerenciar e localizar motos dentro dos pátios 
-devido à imprecisão do GPS em espaços curtos e à falta de um sistema eficiente de registro. Atualmente, as entradas e saídas das motos são registradas 
-de forma simplificada (apenas com dados como chassi, placa e data), o que gera desorganização, ineficiência operacional e até riscos de perdas.
+Atualmente o projeto tem como foco os funcionários e o que eles podera fazer dentro do aplicativo.
 
-Para este sprint, nós criamos uma aplicação que atualmente tem cinco telas, para o usuário poder adicionar e excluir os pátios. Mas, nas próximas sprints, 
-haverá mais telas, onde ele poderá interagir até com os motoqueiros.
+## 👥 Público-Alvo
 
+Nosso público-alvo são **empresas e equipes de Gestão de Pessoas (RH)** que desejam ter uma noção proativa de como anda a saúde emocional e o bem-estar geral de seus colaboradores, permitindo a criação de estratégias de apoio mais eficazes.
 
-O sistema permite:
-- Logar como admin
-- Consultar Pátios existentes 
-- Adicionar e excluir Pátios
-- Vizualizar perfil do admin
+## 🚀 Principais Funcionalidades
+
+O sistema foi desenhado para ser simples e eficaz, focado na coleta de dados relevantes:
+
+### 1. Log Diário de Emoções
+Ao final do dia de trabalho, o usuário pode acessar a plataforma para registrar sobre suas emoções e o sentimento geral daquele dia.
+
+### 2. Coleta de Contexto (Evidências)
+Para entender as possíveis causas por trás das emoções relatadas, o ZenLog coleta evidências sobre hábitos diários cruciais para o bem-estar:
+
+* **Hidratação:** Quanto de água o usuário tomou no dia?
+* **Atividade Física:** O usuário se exercitou?
+* **Sono:** Quantas horas o usuário dormiu na noite anterior?
+* **Descanso Mental:** O usuário conseguiu descansar a mente em algum momento?
+
+### 3. Medidas Paliativas
+Com base nos dados fornecidos, a empresa irá poder ver como esta a saúde de seus funcionários e poderam tomar medidas, por exemplo:
+* Incentivar caminhadas;
+* Realizar palestras de bem-estar;
+* Realizar eventos para distrair os funcionários.
+
+---
 
 
 ## Nome Integrantes
@@ -31,10 +47,20 @@ O sistema permite:
 
 </div>
 
+## ⚙️ Informações: 
+
+Nosso projeto esta rodando localmente, e esta integrado com a API de Java, desde o login até o cadastro de novos usuários, a API provavelmente estará deployada e então é possível que demore um pouco para funcionar.  
+
 
 ## 🚀 Começando
 
-Para inicializar o projeto com expo, rodar o comando: 
+Para inicializar o projeto instale as dependências, com o comando:
+
+```
+  npm install
+```
+
+Depois para inicializar o projeto com expo, rodar o comando: 
 
 ```
   npx expo start
@@ -42,35 +68,20 @@ Para inicializar o projeto com expo, rodar o comando:
 
 Ele ira inicializar na porta *http://localhost:8081*
 
-A primeira tela que você irá ver será a tela de login, nela você encontrará algumas opções, algumas delas não estarão funcionando ainda, os campos são: esqueceu minha senha, entrar com google e entrar com github,
-eles serão implementados em sprints posteriores, para ter o acesso as outras funcionalidades o login de acesso vai estar na tela mas vou colocar aqui também, se tentar acessar com outras vai gerar um erro, pois esse admin esta mokado e não tem outros, pós login entrará na tela do Admin, onde tem 3 opções de escolha:
+A primeira tela que você irá ver será a tela de login, nela você encontrará algumas opções, o login de fato e para cadastrar uma conta.
+Sugiro cadastrar para ter uma experiencia ampla. 
+
+Pós cadastro, irá colocar as credências para logar, depois de logar irá ver um dashboard do usuário, nele vai encontrar 3 opções:
+
+#### Consultar Logs Diários: 
+Aqui o usuário poderá ver seus logs, se não tiver vai poder adicionar um log, se ja tiver o log aparecerá 2 opções, uma para editar o log e a outra para excluir o log.
+
+####  Meu Perfil: 
+Aqui irá mostrar as informações do usuário e também tem uma opção de atualizar essas informações.
+
+#### Sair: 
+Para deslogar da aplicação.
 
 
-```
-  Login: admin
-  Senha: admin
-```
-
-
-1- Consultar Pátios
-Onde terá uma lista de pátios cadastrados ou não que em cada pátio terá um borão de excluir e também haverá um botão de inserir pátio, onde vai poder inserir novos pátios e eles seram armazenados em memória.
-
-2- Meu Perfil
-Onde terá informações sobre o admin como por exemplo o nome e a função.
-
-3- Botão de sair.
-
-
-## Link Figma: 
-A navegação não está funcional pois não conseguimos implementar pela falta de tempo, mas o senhor disse que não ia cobrar.
-https://www.figma.com/design/eCgS0WKfb2uH6ijMKgHO59/MotoFindr?node-id=13-3&t=kmdQQDYZvQpLoS5V-1
-
-## Link Expo:
-
-<img width="323" height="317" alt="image" src="https://github.com/user-attachments/assets/eb6819b4-1143-474a-a70f-ae1d0e9c1b25" />
-
-
- https://expo.dev/preview/update?message=Atualiza%C3%A7%C3%A3o+OTA&updateRuntimeVersion=1.0.0&createdAt=2025-09-24T00%3A52%3A44.818Z&slug=exp&projectId=014ca88d-3f94-4137-9c23-a3d0396c7cab&group=260753db-0e79-4494-8e26-e9c83f3b2f00
-
-
-exp+://expo-development-client/?url=https://u.expo.dev/014ca88d-3f94-4137-9c23-a3d0396c7cab/group/260753db-0e79-4494-8e26-e9c83f3b2f00
+## Links: 
+Link de video demonstração: https://youtu.be/5x9SKkDX6kM
